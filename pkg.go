@@ -14,7 +14,12 @@ type Package struct {
 	Deps       []string
 	Standard   bool
 
+	GoFiles  []string
+	CgoFiles []string
+
+	TestGoFiles  []string
 	TestImports  []string
+	XTestGoFiles []string
 	XTestImports []string
 
 	Error struct {
@@ -57,4 +62,8 @@ func LoadPackages(name ...string) (a []*Package, err error) {
 		return nil, err
 	}
 	return a, nil
+}
+
+func (p *Package) allGoFiles() []string {
+	return append(p.GoFiles, append(p.CgoFiles, append(p.TestGoFiles, p.XTestGoFiles...)...)...)
 }
